@@ -2,6 +2,7 @@
 /*
  * appender_type_staticfile.c
  *
+ * Copyright 2019, Kevin L. Esteb (kevin@kesteb.us). All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
  */

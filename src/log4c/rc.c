@@ -172,7 +172,6 @@ static int appender_load(log4c_rc_t* this, sd_domnode_t* anode)
         sd_domnode_t *dom = NULL;
         const char *logdir = ".";
         const char *logprefix = "unnamed.log";
-        const char *rollingpolicy_name = NULL;
 
         dom = sd_domnode_attrs_get(anode, "logdir");
         if (dom && dom->value) {

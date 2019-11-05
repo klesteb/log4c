@@ -11,7 +11,7 @@
 	</config>
 
 	<category name="root" priority="notice"/>
-        <category name="six13log.log" priority="error" appender="stdout" />
+    <category name="six13log.log" priority="error" appender="stdout" />
 
 	<rollingpolicy name="myrollingpolicy" type="sizewin" maxsize="1024" maxnum="10" />
 
@@ -25,18 +25,18 @@
 	<appender name="plain_stderr" type="s13_stderr" layout="none"/>
 	<appender name="cat_stderr" type="s13_stderr" layout="catlayout"/>
 	<appender name="xml_stderr" type="s13_stderr" layout="xmllayout"/>
-        <appender name="user_stderr" type="s13_stderr" layout="userlayout"/>
+    <appender name="user_stderr" type="s13_stderr" layout="userlayout"/>
 
 	<layout name="basic" type="basic"/>
 	<layout name="dated" type="dated"/>
 	
 	<layout name="catlayout" type="s13_cat"/>
 	<layout name="xmllayout" type="s13_xml"/>
-        <layout name="none" type="s13_none"/>
+    <layout name="none" type="s13_none"/>
 	<layout name="userlayout" type="s13_userloc"/>
 	
 	<category name="six13log.log.app.application2" priority="debug" appender="cat_stderr" />
 	<category name="six13log.log.app.application3" priority="debug" appender="user_stderr" />
-        <category name="six13log.log.app" priority="debug" appender="myrollingfileappender" />
+    <category name="six13log.log.app" priority="debug" appender="myrollingfileappender" />
 
 </log4c>
