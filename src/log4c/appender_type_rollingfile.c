@@ -25,6 +25,7 @@
 #include <log4c/rollingpolicy.h>
 #include <sd/malloc.h>
 #include <sd/error.h>
+#include <sd/domnode.h>
 #include <sd/sd_xplatform.h>
 
 /* Internal structs that defines the conf and the state info
@@ -181,6 +182,65 @@ static int rollingfile_append(log4c_appender_t* this,
   return (rc);
 
 }
+
+/*******************************************************************************/
+static int rollingfile_parse(log4c_appender_t *this, void *a_node) {
+
+    rollingfile_udata_t *rfup = NULL;
+    log4c_rollingpolicy_t *rollingpolicyp = NULL;
+    sd_domnode_t *dom = NULL;
+    const char *logdir = ".";
+    const char *logprefix = "unnamed.log";
+    const char *rollingpolicy_name = NULL;
+    sd_domnode_t *anode = (sd_domnode_t *)a_node;
+
+    dom = sd_domnode_attrs_get(anode, "logdir");
+    if (dom && dom->value) {
+        logdir = dom->value;
+    }
+
+    dom = sd_domnode_attrs_get(anode, "prefix");
+    if (dom && dom->value) {
+        logprefix = dom->value;
+    }
+
+    dom = sd_domnode_attrs_get(anode, "rollingpolicy");
+    if (dom && dom->value) {
+        rollingpolicy_name = dom->value;
+    }
+
+    sd_debug("logdir='%s', prefix='%s', rollingpolicy='%s'",
+             logdir, logprefix,
+             rollingpolicy_name ? rollingpolicy_name : "(not set)");
+
+    rfup = rollingfile_make_udata();
+
+    rollingfile_udata_set_logdir(rfup, logdir);
+    rollingfile_udata_set_files_prefix(rfup, logprefix);
+
+    if (rollingpolicy_name && *rollingpolicy_name) {
+
+        /* recover a rollingpolicy instance with this name */
+        rollingpolicyp = log4c_rollingpolicy_get(rollingpolicy_name);
+          
+        /* connect that policy to this rollingfile appender conf */
+        rollingfile_udata_set_policy(rfup, rollingpolicyp);
+        log4c_appender_set_udata(this, rfup);
+          
+        /* allow the policy to initialize itself */
+        log4c_rollingpolicy_init(rollingpolicyp, rfup);
+
+    } else {
+
+        /* no rollingpolicy specified, default to default sizewin */
+        sd_debug("no rollingpolicy name specified--will default");
+
+    }
+
+    return 0;
+    
+}
+
 /****************************************************************************/
 static int rollingfile_close(log4c_appender_t* this)
 {  
@@ -342,6 +402,7 @@ const log4c_appender_type_t log4c_appender_type_rollingfile = {
     "rollingfile",
     rollingfile_open,
     rollingfile_append,
-    rollingfile_close
+    rollingfile_close,
+    rollingfile_parse
 };
 

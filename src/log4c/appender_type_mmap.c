@@ -152,5 +152,6 @@ const log4c_appender_type_t log4c_appender_type_mmap = {
     mmap_open,
     mmap_append,
     mmap_close,
+    NULL
 };
 

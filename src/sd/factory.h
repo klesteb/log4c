@@ -26,6 +26,7 @@ struct __sd_factory_ops
     void* (*fac_new)	(const char*);
     void  (*fac_delete)	(void*);
     void  (*fac_print)	(void*, FILE*);
+    void  (*fac_parse)  (void*, void*);
 };
 typedef struct __sd_factory_ops sd_factory_ops_t;
 

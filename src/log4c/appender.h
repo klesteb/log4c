@@ -42,12 +42,14 @@ typedef struct __log4c_appender log4c_appender_t;
  * @li @c open
  * @li @c append
  * @li @c close
+ * @li @c parser
  **/
 typedef struct log4c_appender_type {
     const char*	  name;
-    int (*open)	  (log4c_appender_t*);
-    int (*append) (log4c_appender_t*, const log4c_logging_event_t*);
-    int (*close)  (log4c_appender_t*);
+    int (*open)  (log4c_appender_t *);
+    int (*append)(log4c_appender_t *, const log4c_logging_event_t *);
+    int (*close) (log4c_appender_t *);
+    int (*parser)(log4c_appender_t *, void *);
 } log4c_appender_type_t;
 
 /**
@@ -76,6 +78,7 @@ LOG4C_API const log4c_appender_type_t* log4c_appender_type_get(const char* a_nam
  *   s13_file_open,
  *   s13_file_append,
  *   s13_file_close,
+ *   NULL
  * };
  *  
  *  log4c_appender_type_set(&log4c_appender_type_s13_file);
@@ -147,8 +150,9 @@ LOG4C_API const log4c_appender_type_t* log4c_appender_set_type(
  * @param a_udata the new appender user data
  * @return the previous appender user data
  **/
-LOG4C_API void* log4c_appender_set_udata(log4c_appender_t*	a_appender, 
-				      void* a_udata);
+LOG4C_API void* log4c_appender_set_udata(
+    log4c_appender_t* a_appender, 
+    void* a_udata);
 
 /**
  * sets the appender layout
@@ -177,6 +181,17 @@ LOG4C_API int log4c_appender_open(log4c_appender_t* a_appender);
 LOG4C_API int log4c_appender_append(
     log4c_appender_t* a_appender,
     log4c_logging_event_t* a_event);
+
+/**
+ * the appender parser
+ *
+ * @param a_appender the log4c_appender_t object
+ * @param a_node the dom node to parse
+ * @return zero if successful, -1 otherwise
+ **/
+LOG4C_API int log4c_appender_parse(
+    log4c_appender_t* a_appender, 
+    void* a_node);
 
 /**
  * closes the appender

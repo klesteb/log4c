@@ -113,5 +113,6 @@ const log4c_appender_type_t log4c_appender_type_syslog = {
     syslog_open,
     syslog_append,
     syslog_close,
+    NULL
 };
 

@@ -3,6 +3,7 @@ static const char version[] = "$Id: rc.c,v 1.13 2009/05/04 12:30:45 legoater Exp
 /*
  * rc.c
  *
+ * Copyright 2019, Kevin L. Esteb (kevin@kesteb.us). All rights reserved.
  * Copyright 2001-2003, Meiosys (www.meiosys.com). All rights reserved.
  *
  * See the COPYING file for the terms of usage and distribution.
@@ -151,109 +152,35 @@ static int appender_load(log4c_rc_t* this, sd_domnode_t* anode)
     sd_domnode_t*     type   = sd_domnode_attrs_get(anode, "type");
     sd_domnode_t*     layout = sd_domnode_attrs_get(anode, "layout");
     log4c_appender_t* app    = NULL;
-    
+
     if (!name) {
-	sd_error("attribute \"name\" is missing");
-	return -1;
+        sd_error("attribute \"name\" is missing");
+        return -1;
     }
     
     sd_debug("appender_load[name='%s'", 
       (name->value ? name->value :"(not set)"));
     
     app = log4c_appender_get(name->value);
-    
-    if (type){
-      sd_debug("appender type is '%s'",
-        (type->value ? type->value: "(not set)"));
-      log4c_appender_set_type(app, log4c_appender_type_get(type->value));
-      
-      if ( !strcasecmp(type->value, "staticfile")) {
-        rollingfile_udata_t *rfup = NULL;
-        sd_domnode_t *dom = NULL;
-        const char *logdir = ".";
-        const char *logprefix = "unnamed.log";
 
-        dom = sd_domnode_attrs_get(anode, "logdir");
-        if (dom && dom->value) {
-          logdir = dom->value;
-        }
+    if (type) {
 
-        dom = sd_domnode_attrs_get(anode, "prefix");
-        if (dom && dom->value) {
-          logprefix = dom->value;
-        } else if (name && name->value) {
-          logprefix = name->value;
-        }
+        sd_debug("appender type is '%s'",
+                 (type->value ? type->value: "(not set)"));
 
-        sd_debug("logdir='%s', prefix='%s'", logdir, logprefix);
+        log4c_appender_set_type(app, log4c_appender_type_get(type->value));
+        log4c_appender_parse(app, anode);
 
-        rfup = rollingfile_make_udata();
-
-        rollingfile_udata_set_logdir(rfup, logdir);
-        rollingfile_udata_set_files_prefix(rfup, logprefix);
-
-        log4c_appender_set_udata(app, rfup);
-          
-      }
-#ifdef WITH_ROLLINGFILE
-      if ( !strcasecmp(type->value, "rollingfile")) {
-        rollingfile_udata_t *rfup = NULL;
-        log4c_rollingpolicy_t *rollingpolicyp = NULL;
-        sd_domnode_t *dom = NULL;
-        const char *logdir = ".";
-        const char *logprefix = "unnamed.log";
-        const char *rollingpolicy_name = NULL;
-
-        dom = sd_domnode_attrs_get(anode, "logdir");
-        if (dom && dom->value) {
-          logdir = dom->value;
-        }
-
-        dom = sd_domnode_attrs_get(anode, "prefix");
-        if (dom && dom->value) {
-          logprefix = dom->value;
-        } else if (name && name->value) {
-          logprefix = name->value;
-        }
-
-        dom = sd_domnode_attrs_get(anode, "rollingpolicy");
-        if (dom && dom->value) {
-          rollingpolicy_name = dom->value;
-        }
-
-        sd_debug("logdir='%s', prefix='%s', rollingpolicy='%s'",
-           logdir, logprefix,
-           rollingpolicy_name ? rollingpolicy_name : "(not set)");
-
-        rfup = rollingfile_make_udata();
-
-        rollingfile_udata_set_logdir(rfup, logdir);
-        rollingfile_udata_set_files_prefix(rfup, logprefix);
-
-        if (rollingpolicy_name && *rollingpolicy_name) {
-          /* recover a rollingpolicy instance with this name */
-          rollingpolicyp = log4c_rollingpolicy_get(rollingpolicy_name);
-          
-          /* connect that policy to this rollingfile appender conf */
-          rollingfile_udata_set_policy(rfup, rollingpolicyp);
-          log4c_appender_set_udata(app, rfup);
-          
-          /* allow the policy to initialize itself */
-          log4c_rollingpolicy_init(rollingpolicyp, rfup);
-        } else {
-          /* no rollingpolicy specified, default to default sizewin */
-          sd_debug("no rollingpolicy name specified--will default");
-        }
-      }
-#endif
     }
 
-    if (layout)
-	log4c_appender_set_layout(app, log4c_layout_get(layout->value));
+    if (layout) {
+        log4c_appender_set_layout(app, log4c_layout_get(layout->value));
+    }
 
     sd_debug("]");
 
     return 0;
+
 }
 
 /******************************************************************************/

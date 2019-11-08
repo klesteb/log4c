@@ -1,12 +1,12 @@
 
-2019-10-01  Kevin L. Esteb <kevin@kesteb.us>
+2019-11-08  Kevin L. Esteb <kevin@kesteb.us>
     * src/log4c/appender_type_staticfile.[c|h] 
     Added a static file appender.
 
     * src/log4c/appender_type_basic_r.[c|h]
     * src/log4c/appender_type_dated_r.[c|h]
     * src/log4c/appender_type_dated_local_r.[c|h]
-    Removed them. Them seemed redundant. 
+    Removed them. They seemed redundant. 
 
     * src/log4c/appender_type_basic.[c|h]
     * src/log4c/appender_type_dated.[c|h]
@@ -15,6 +15,8 @@
 
     * src/log4c/rc.c
     * src/log4c/init.c
+    * src/log4c/appender.[c|h]
+    * src/sd/factory.h
     Extended the config file handling for the new static file appender.
 
     * src/log4c/Makefile.am

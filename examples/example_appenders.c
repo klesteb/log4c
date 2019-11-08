@@ -87,6 +87,7 @@ const log4c_appender_type_t log4c_appender_type_s13_file = {
     etf_open,
     s13_file_append,
     etf_close,
+    NULL
 };
 
 /*******************************************************************************/
@@ -113,6 +114,7 @@ const log4c_appender_type_t log4c_appender_type_s13_stderr = {
    s13_stderr_open,
    s13_stderr_append,
    NULL,
+   NULL
 };
 
 
@@ -151,6 +153,7 @@ const log4c_appender_type_t log4c_appender_type_syslog_user = {
     syslog_user_open,
     syslog_user_append,
     syslog_user_close,
+    NULL
 };
 
 /**************************/
@@ -187,6 +190,7 @@ const log4c_appender_type_t log4c_appender_type_syslog_local0 = {
   syslog_local0_open,
   syslog_local0_append,
   syslog_local0_close,
+  NULL
 };
 
 

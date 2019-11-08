@@ -1,13 +1,12 @@
-In this release there is a new static file appender along with supporting 
-syntax for the configuration file. This appender opens the file, writes
-the log message and then closes the file. This allows other processes to
-monitor the log file.
+In this release there is a new static file appender. This appender opens 
+the file, writes the log message and then closes the file. This allows 
+other processes to monitor the log file. You can now add a cutom parser for
+an appender. This allows you to extend the syntax used for an appender.
 
 Summary of the changes:
 
 * added a static file appender.
-* updated the config file handing to accommodate the new syntax for the 
-  appender.
+* added the ability to load a custom parser for an appender.
 * removed the basic_r, dated_r and dated_local_r appenders. 
 
 1.2.4   2013-10-03: 

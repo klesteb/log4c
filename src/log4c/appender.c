@@ -23,11 +23,11 @@ static const char version[] = "$Id: appender.c,v 1.8 2013/04/06 13:04:53 valtri 
 
 struct __log4c_appender
 {
-  char*				app_name;
-  const log4c_layout_t*		app_layout;
-  const log4c_appender_type_t*	app_type;
-  int					app_isopen;
-  void*				app_udata;
+  char*                        app_name;
+  const log4c_layout_t*		   app_layout;
+  const log4c_appender_type_t* app_type;
+  int                          app_isopen;
+  void*                        app_udata;
 };
 
 sd_factory_t* log4c_appender_factory = NULL;
@@ -104,6 +104,7 @@ extern log4c_appender_t* log4c_appender_get(const char* a_name)
     (void*) log4c_appender_new,
     (void*) log4c_appender_delete,
     (void*) log4c_appender_print,
+    (void*) log4c_appender_parse
   };
   
   if (!log4c_appender_factory) {
@@ -126,7 +127,7 @@ extern log4c_appender_t* log4c_appender_new(const char* a_name)
   if (!a_name)
     return NULL;
   
-  this	     = sd_calloc(1, sizeof(log4c_appender_t));
+  this             = sd_calloc(1, sizeof(log4c_appender_t));
   this->app_name   = sd_strdup(a_name);
   this->app_type   = &log4c_appender_type_stream;
   this->app_layout = log4c_layout_get("basic");
@@ -313,3 +314,23 @@ extern void log4c_appender_print(const log4c_appender_t* this, FILE* a_stream)
 	    this->app_isopen, 
 	    this->app_udata);
 }
+
+/*******************************************************************************/
+extern int log4c_appender_parse(log4c_appender_t* this, void *anode)
+{
+
+  if (!this)
+    return -1;
+  
+  if (!this->app_type)
+    return 0;
+  
+  if (!this->app_type->parser)
+    return 0;
+    
+  if (this->app_type->parser(this, anode) == -1)
+    return -1;
+
+  return 0;
+}
+
