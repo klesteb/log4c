@@ -59,7 +59,7 @@ static int domain_open(log4c_appender_t *this) {
         if (sfd == -1) {
 
             rc = -1;
-            sd_error("%d, %s", errno, strerror(errno));
+            sd_error("domain_open(): %d, %s", errno, strerror(errno));
             goto fini;
 
         }
@@ -71,7 +71,7 @@ static int domain_open(log4c_appender_t *this) {
         rc = connect(sfd, (struct sockaddr *)&saddr, sizeof(saddr));
         if (rc == -1) {
 
-            sd_error("%d, %s", errno, strerror(errno));
+            sd_error("domain_open(): %d, %s", errno, strerror(errno));
             goto fini;
 
         }
@@ -94,27 +94,35 @@ static int domain_append(log4c_appender_t* this,
     int len = 0;
     int rc = -1;
     int count = 0;
+    int bufsize = 0;
     char *buffer = NULL;
     char *fmt = "%s\r\n";
     domain_udata_t *udata = log4c_appender_get_udata(this); 
 
     sd_debug("domain_append[");
- 
+
     if (udata != NULL) {
 
         len = strlen(a_event->evt_rendered_msg) + 3;
         buffer = sd_calloc(1, len);
         snprintf(buffer, len, fmt, a_event->evt_rendered_msg);
-        count = write(udata->sfd, buffer, len - 1);
+        bufsize = len - 1;
 
-        if (count == (len - 1)) {
+        errno = 0;
+        count = write(udata->sfd, buffer, bufsize);
+
+        if (count == -1) {
+
+            sd_error("domain_append(): %d, %s", errno, strerror(errno));
+
+        } else if (count == bufsize) {
 
             rc = 0;
 
         }
 
         free(buffer);
-        
+
     }
 
     sd_debug("]");
@@ -125,7 +133,7 @@ static int domain_append(log4c_appender_t* this,
 
 /****************************************************************************/
 static int domain_close(log4c_appender_t* this) {  
-    
+
     int rc = 0;
     domain_udata_t *udata = log4c_appender_get_udata(this); 
 
@@ -135,14 +143,14 @@ static int domain_close(log4c_appender_t* this) {
 
         rc = -1; 
         goto fini;
-        
+
     }
  
     if (udata == NULL) {
 
         rc = -1;
         goto fini;
-        
+
     }
 
     free(udata->path);
@@ -183,7 +191,7 @@ static int domain_parse(log4c_appender_t *this, void *a_node) {
     domain_udata_set_path(udata, path);
 
     log4c_appender_set_udata(this, udata);
-          
+
     return 0;
     
 }
