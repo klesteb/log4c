@@ -16,9 +16,9 @@
  * @brief Log4c static file appender interface.
  *
  * The static file appender implements a logging mechanism of
- * opening the file, write a log message and then closeing the file.
+ * opening the file, write a log message and then closing the file.
  *
-*/
+ **/
 
 #include <log4c/defs.h>
 #include <log4c/appender.h>
@@ -56,7 +56,7 @@ LOG4C_API int staticfile_udata_set_logdir(
                 const char* logdir);
 /**
  * Set the prefix string in this rolling file appender configuration.
- * @param rfudatap the rolling file appender configuration object.
+ * @param sfudatap the rolling file appender configuration object.
  * @param prefix the logging files prfix to use.
  * @return zero if successful, non-zero otherwise.
  */                            
