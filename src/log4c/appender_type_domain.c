@@ -13,8 +13,11 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -30,8 +33,8 @@
  */    
 
 struct __domain_udata {
-  const char *path;
-  const int sfd;
+  char *path;
+  int sfd;
 };
 
 /***************************************************************************
@@ -56,7 +59,7 @@ static int domain_open(log4c_appender_t *this) {
         if (sfd == -1) {
 
             rc = -1;
-            sd_debug("error: %d, %s", errno, strerror(errno));
+            sd_error("%d, %s", errno, strerror(errno));
             goto fini;
 
         }
@@ -68,7 +71,7 @@ static int domain_open(log4c_appender_t *this) {
         rc = connect(sfd, (struct sockaddr *)&saddr, sizeof(saddr));
         if (rc == -1) {
 
-            sd_debug("error: %d, %s", errno, strerror(errno));
+            sd_error("%d, %s", errno, strerror(errno));
             goto fini;
 
         }
@@ -224,7 +227,7 @@ LOG4C_API int domain_udata_set_fd(domain_udata_t *udata, int fd) {
 }
 
 /*******************************************************************************/
-LOG4C_API const char * domain_udata_get_fd(domain_udata_t *udata){
+LOG4C_API int  domain_udata_get_fd(domain_udata_t *udata){
 
     return udata->sfd; 
 

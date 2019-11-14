@@ -83,21 +83,23 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 liblog4c_la_DEPENDENCIES = ../sd/liblog4c_sd.la
 am__liblog4c_la_SOURCES_DIST = rc.c init.c appender_type_stream.c \
 	appender_type_stream2.c appender_type_syslog.c \
-	appender_type_staticfile.c layout_type_basic.c \
-	layout_type_dated.c layout_type_dated_local.c version.c \
-	logging_event.c priority.c appender.c layout.c category.c \
-	appender_type_rollingfile.c rollingpolicy.c \
-	rollingpolicy_type_sizewin.c appender_type_mmap.c
+	appender_type_staticfile.c appender_type_domain.c \
+	layout_type_basic.c layout_type_dated.c \
+	layout_type_dated_local.c version.c logging_event.c priority.c \
+	appender.c layout.c category.c appender_type_rollingfile.c \
+	rollingpolicy.c rollingpolicy_type_sizewin.c \
+	appender_type_mmap.c
 am__objects_1 = appender_type_rollingfile.lo \
 	rollingpolicy.lo \
 	rollingpolicy_type_sizewin.lo
 am__objects_2 = appender_type_mmap.lo
 am_liblog4c_la_OBJECTS = rc.lo init.lo appender_type_stream.lo \
 	appender_type_stream2.lo appender_type_syslog.lo \
-	appender_type_staticfile.lo layout_type_basic.lo \
-	layout_type_dated.lo layout_type_dated_local.lo version.lo \
-	logging_event.lo priority.lo appender.lo layout.lo category.lo \
-	$(am__objects_1) $(am__objects_2)
+	appender_type_staticfile.lo appender_type_domain.lo \
+	layout_type_basic.lo layout_type_dated.lo \
+	layout_type_dated_local.lo version.lo logging_event.lo \
+	priority.lo appender.lo layout.lo category.lo $(am__objects_1) \
+	$(am__objects_2)
 liblog4c_la_OBJECTS = $(am_liblog4c_la_OBJECTS)
 liblog4c_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -266,10 +268,10 @@ DEF_FILE = liblog4c.def
 #def_ldflags = -Wl,--output-def,$(DEF_FILE)
 liblog4c_la_SOURCES = rc.c init.c appender_type_stream.c \
 	appender_type_stream2.c appender_type_syslog.c \
-	appender_type_staticfile.c layout_type_basic.c \
-	layout_type_dated.c layout_type_dated_local.c version.c \
-	logging_event.c priority.c appender.c layout.c category.c \
-	$(am__append_1) $(am__append_2)
+	appender_type_staticfile.c appender_type_domain.c \
+	layout_type_basic.c layout_type_dated.c \
+	layout_type_dated_local.c version.c logging_event.c priority.c \
+	appender.c layout.c category.c $(am__append_1) $(am__append_2)
 liblog4c_la_LDFLAGS = -version-info 6:1:3 $(LDFLAGS_NOUNDEFINED) \
 	$(def_ldflags)
 
@@ -293,6 +295,7 @@ pkginclude_HEADERS = \
 	appender_type_syslog.h \
 	appender_type_mmap.h \
 	appender_type_staticfile.h \
+	appender_type_domain.h \
 	appender.h \
 	category.h \
   appender_type_rollingfile.h \
@@ -376,6 +379,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/appender.Plo
+include ./$(DEPDIR)/appender_type_domain.Plo
 include ./$(DEPDIR)/appender_type_mmap.Plo
 include ./$(DEPDIR)/appender_type_rollingfile.Plo
 include ./$(DEPDIR)/appender_type_staticfile.Plo
