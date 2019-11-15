@@ -33,8 +33,9 @@
  */    
 
 struct __domain_udata {
-  char *path;
-  int sfd;
+    char *path;
+    int sfd;
+    int timeout;
 };
 
 /***************************************************************************
@@ -52,10 +53,10 @@ static int domain_open(log4c_appender_t *this) {
 
     memset(&saddr, 0, sizeof(struct sockaddr_un));
 
-    if (udata != NULL) {
+    if (udata->sfd == 0) {
 
         errno = 0;
-        sfd = socket(AF_UNIX, SOCK_STREAM, 0);
+        sfd = socket(AF_LOCAL, SOCK_STREAM, 0);
         if (sfd == -1) {
 
             rc = -1;
@@ -64,11 +65,11 @@ static int domain_open(log4c_appender_t *this) {
 
         }
 
-        saddr.sun_family = AF_UNIX;
+        saddr.sun_family = AF_LOCAL;
         strcpy(saddr.sun_path, udata->path);
 
         errno = 0;
-        rc = connect(sfd, (struct sockaddr *)&saddr, sizeof(saddr));
+        rc = connect(sfd, (struct sockaddr *)&saddr, SUN_LEN(&saddr));
         if (rc == -1) {
 
             sd_error("domain_open(): %d, %s", errno, strerror(errno));
@@ -108,22 +109,34 @@ static int domain_append(log4c_appender_t* this,
         snprintf(buffer, len, fmt, a_event->evt_rendered_msg);
         bufsize = len - 1;
 
-        errno = 0;
-        count = write(udata->sfd, buffer, bufsize);
+        while (bufsize > 0) {
 
-        if (count == -1) {
+            errno = 0;
 
-            sd_error("domain_append(): %d, %s", errno, strerror(errno));
+            if ((count = write(udata->sfd, buffer, bufsize))) {
 
-        } else if (count == bufsize) {
+                if (errno == EINTR) {
 
-            rc = 0;
+                    count = 0;
+
+                } else {
+
+                    sd_error("domain_append(): %d, %s", errno, strerror(errno));
+                    goto fini;
+
+                }
+
+                bufsize -= count;
+                buffer += count;
+
+            }
 
         }
 
-        free(buffer);
-
     }
+
+    fini:
+    free(buffer);
 
     sd_debug("]");
 
@@ -166,6 +179,7 @@ static int domain_close(log4c_appender_t* this) {
 /*******************************************************************************/
 static int domain_parse(log4c_appender_t *this, void *a_node) {
 
+    int timeout = 10;
     struct sockaddr_un saddr;
     sd_domnode_t *dom = NULL;
     domain_udata_t *udata = NULL;
@@ -179,16 +193,24 @@ static int domain_parse(log4c_appender_t *this, void *a_node) {
         path = dom->value;
         if (strlen(path) > len) {
 
-            path[len] = '\0';
+            path[len + 1] = '\0';
 
         }
 
     }
 
-    sd_debug("path='%s'", path);
+    dom = sd_domnode_attrs_get(anode, "timeout");
+    if (dom && dom->value) {
+
+        timeout = atoi(dom->value);
+
+    }
+
+    sd_debug("path='%s', timeout='%d'", path, timeout);
 
     udata = domain_make_udata();
     domain_udata_set_path(udata, path);
+    domain_udata_set_timeout(udata, timeout);
 
     log4c_appender_set_udata(this, udata);
 
@@ -238,6 +260,22 @@ LOG4C_API int domain_udata_set_fd(domain_udata_t *udata, int fd) {
 LOG4C_API int  domain_udata_get_fd(domain_udata_t *udata){
 
     return udata->sfd; 
+
+}
+
+/*******************************************************************************/
+LOG4C_API int domain_udata_set_timeout(domain_udata_t *udata, int timeout) {
+
+    udata->timeout = timeout;
+
+    return 0;
+
+}
+
+/*******************************************************************************/
+LOG4C_API int domain_udata_get_timeout(domain_udata_t *udata){
+
+    return udata->timeout; 
 
 }
 

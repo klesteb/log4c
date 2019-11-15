@@ -72,6 +72,21 @@ LOG4C_API int domain_udata_set_fd(domain_udata_t *udata, int sfd);
  **/                              
 LOG4C_API int domain_udata_get_fd(domain_udata_t *udata);
 
+/**
+ * Set the timeout for this domain socket appender configuration.
+ * @param udata the domain socket appender configuration object.
+ * @param timeout the timeout for the domain socket.
+ * @return zero if successful, non-zero otherwise.
+ **/
+LOG4C_API int domain_udata_set_timeout(domain_udata_t *udata, int timeout);
+
+/**
+ * Get the timeout for this domain socket appender configuration.
+ * @param udata the static file appender configuration object.
+ * @return the logging directory.
+ **/                              
+LOG4C_API int domain_udata_get_timeout(domain_udata_t *udata);
+
 __LOG4C_END_DECLS
 
 #endif
