@@ -2,42 +2,44 @@
 
 %define RELEASE 1
 %define rel     %{?CUSTOM_RELEASE} %{!?CUSTOM_RELEASE:%RELEASE}
+%define name    @PACKAGE@
+%define version @VERSION@
 %define _unpackaged_files_terminate_build 0
 
 Name: 		@PACKAGE@
 Version: 	@VERSION@
-Release: 	%rel
+Release: 	%{rel}
 
 Summary: 	Log for C
 License:	LGPLv2+
 Group:		Development/Libraries
-Vendor:		Cedric Le Goater <legoater@free.fr>
-Packager:	Cedric Le Goater <legoater@free.fr>
-Url:		http://%name.sourceforge.net/
-Source:		http://prdownloads.sourceforge.net/%name/%name-%version.tar.gz
-BuildRoot:	%_topdir/%name-%version-root
+Vendor:		Kevin L. Esteb <kevin@kesteb.us>
+Packager:	Kevin L. Esteb <kevin@kesteb.us>
+Url:		https://github.com/klesteb/%{name}
+Source:		https://github.com/klesteb/%{name}/archive/%{version}.tar.gz
+BuildRoot:	%{_topdir}/%{name}-%{version}-root
 BuildRequires: 	doxygen
 Requires: 	/sbin/ldconfig
 
 %description
-%name is a Logging FrameWork for C, as Log4j or Log4Cpp.
+%{name} is a Logging FrameWork for C, as Log4j or Log4Cpp.
 
 %package devel
-Summary: Development tools for %name
+Summary: Development tools for %{name}
 Group: Development/Libraries
-Requires: %name = %version
+Requires: %{name} = %{version}
 
 %package doc
-Summary: documentation for %name
+Summary: documentation for %{name}
 Group: Development/Libraries
-Requires: %name = %version
+Requires: %{name} = %{version}
 
 %description devel
-The %name-devel package contains the static libraries and header files
+The %{name}-devel package contains the static libraries and header files
 needed for development with %name.
 
 %description doc
-The %name-doc package contains the %name documentation
+The %{name}-doc package contains the %{name} documentation
 
 %prep
 %setup -q
