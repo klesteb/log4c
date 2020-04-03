@@ -197,7 +197,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "1.3.0"
+#define VERSION "1.3.1"
 
 /* build log4c with initialization constructors */
 /* #undef WITH_CONSTRUCTORS */

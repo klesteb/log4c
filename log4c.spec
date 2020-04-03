@@ -5,7 +5,7 @@
 %define _unpackaged_files_terminate_build 0
 
 Name: 		log4c
-Version: 	1.3.0
+Version: 	1.3.1
 Release: 	%rel
 
 Summary: 	Log for C

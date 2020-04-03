@@ -28,6 +28,8 @@ static const char version[] = "$Id: init.c,v 1.22 2013/09/29 17:50:09 valtri Exp
 #include <appender_type_syslog.h>
 #include <appender_type_mmap.h>
 #include <appender_type_domain.h>
+#include <appender_type_stderr.h>
+#include <appender_type_stdout.h>
 #include <appender_type_staticfile.h>
 #include <appender_type_rollingfile.h>
 #include <rollingpolicy_type_sizewin.h>
@@ -51,6 +53,8 @@ static const log4c_appender_type_t * const appender_types[] = {
     &log4c_appender_type_stream2,
     &log4c_appender_type_staticfile,
     &log4c_appender_type_domain,
+    &log4c_appender_type_stderr,
+    &log4c_appender_type_stdout,
 #ifdef HAVE_MMAP
     &log4c_appender_type_mmap,
 #endif    

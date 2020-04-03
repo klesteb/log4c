@@ -84,6 +84,7 @@ liblog4c_la_DEPENDENCIES = ../sd/liblog4c_sd.la
 am__liblog4c_la_SOURCES_DIST = rc.c init.c appender_type_stream.c \
 	appender_type_stream2.c appender_type_syslog.c \
 	appender_type_staticfile.c appender_type_domain.c \
+	appender_type_stderr.c appender_type_stdout.c \
 	layout_type_basic.c layout_type_dated.c \
 	layout_type_dated_local.c version.c logging_event.c priority.c \
 	appender.c layout.c category.c appender_type_rollingfile.c \
@@ -96,6 +97,7 @@ am__objects_2 = appender_type_mmap.lo
 am_liblog4c_la_OBJECTS = rc.lo init.lo appender_type_stream.lo \
 	appender_type_stream2.lo appender_type_syslog.lo \
 	appender_type_staticfile.lo appender_type_domain.lo \
+	appender_type_stderr.lo appender_type_stdout.lo \
 	layout_type_basic.lo layout_type_dated.lo \
 	layout_type_dated_local.lo version.lo logging_event.lo \
 	priority.lo appender.lo layout.lo category.lo $(am__objects_1) \
@@ -178,7 +180,7 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LOG4C_MAJOR_VERSION = 1
-LOG4C_MICRO_VERSION = 0
+LOG4C_MICRO_VERSION = 1
 LOG4C_MINOR_VERSION = 3
 LTLIBOBJS = 
 LT_VERSION = 6:1:3
@@ -203,7 +205,7 @@ SED = /bin/sed
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = strip
-VERSION = 1.3.0
+VERSION = 1.3.1
 YACC = bison -y
 YFLAGS = 
 abs_builddir = /home/kesteb/outside/log4c-1.3.0/src/log4c
@@ -269,6 +271,7 @@ DEF_FILE = liblog4c.def
 liblog4c_la_SOURCES = rc.c init.c appender_type_stream.c \
 	appender_type_stream2.c appender_type_syslog.c \
 	appender_type_staticfile.c appender_type_domain.c \
+	appender_type_stderr.c appender_type_stdout.c \
 	layout_type_basic.c layout_type_dated.c \
 	layout_type_dated_local.c version.c logging_event.c priority.c \
 	appender.c layout.c category.c $(am__append_1) $(am__append_2)
@@ -296,6 +299,8 @@ pkginclude_HEADERS = \
 	appender_type_mmap.h \
 	appender_type_staticfile.h \
 	appender_type_domain.h \
+	appender_type_stderr.h \
+	appender_type_stdout.h \
 	appender.h \
 	category.h \
   appender_type_rollingfile.h \
@@ -383,6 +388,8 @@ include ./$(DEPDIR)/appender_type_domain.Plo
 include ./$(DEPDIR)/appender_type_mmap.Plo
 include ./$(DEPDIR)/appender_type_rollingfile.Plo
 include ./$(DEPDIR)/appender_type_staticfile.Plo
+include ./$(DEPDIR)/appender_type_stderr.Plo
+include ./$(DEPDIR)/appender_type_stdout.Plo
 include ./$(DEPDIR)/appender_type_stream.Plo
 include ./$(DEPDIR)/appender_type_stream2.Plo
 include ./$(DEPDIR)/appender_type_syslog.Plo

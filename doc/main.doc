@@ -70,7 +70,7 @@ so you will need GCC to compile it. This will probably change one day.
 @subsection installation_tarballs Building from source tarballs
 
 on SourceForge:
-@li <a href="http://prdownloads.sourceforge.net/log4c/log4c-1.3.0.tar.gz">log4c-1.3.0.tar.gz</a>
+@li <a href="http://prdownloads.sourceforge.net/log4c/log4c-1.3.1.tar.gz">log4c-1.3.1.tar.gz</a>
 
 The log4c package uses the GNU autotools compilation and installation
 framework. The following commands should build log4c on the supported
@@ -78,8 +78,8 @@ platforms:
 
 @code
 
-$ gzip -dc log4c-1.3.0.tar.gz | tar tvf -
-$ cd log4c-1.3.0/
+$ gzip -dc log4c-1.3.1.tar.gz | tar tvf -
+$ cd log4c-1.3.1/
 $ ./configure --prefix=/path/of/installation
 $ make
 $ make install

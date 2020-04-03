@@ -37,7 +37,7 @@ struct __log4c_category;
 typedef struct __log4c_category	log4c_category_t;
 
 /**
- * Instantiate a log4c_category_t with name @a name. This method
+ * Instantiate a log4c_category_t with name @a_name. This method
  * does not set priority of the category which is by default @c
  * LOG4C_PRIORITY_NOTSET.
  * 

@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 Name: log4c
 Description: Library of C for flexible logging to files, syslog and other destinations
-Version: 1.3.0
+Version: 1.3.1
 Requires:
 Libs: -L${libdir} -llog4c
 Cflags: -I${includedir}

@@ -17,6 +17,8 @@ liblog4c_la_SOURCES = \
 	appender_type_syslog.c \
 	appender_type_staticfile.c \
 	appender_type_domain.c \
+	appender_type_stderr.c \
+	appender_type_stdout.c \
 	layout_type_basic.c \
 	layout_type_dated.c \
 	layout_type_dated_local.c \
@@ -60,6 +62,8 @@ pkginclude_HEADERS = \
 	appender_type_mmap.h \
 	appender_type_staticfile.h \
 	appender_type_domain.h \
+	appender_type_stderr.h \
+	appender_type_stdout.h \
 	appender.h \
 	category.h \
   appender_type_rollingfile.h \
